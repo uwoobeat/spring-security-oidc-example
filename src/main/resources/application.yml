@@ -10,3 +10,6 @@ spring:
           kakao:
             issuer-uri: https://kauth.kakao.com
 
+logging:
+  level:
+    org.springframework.web.client.RestTemplate: DEBUG
