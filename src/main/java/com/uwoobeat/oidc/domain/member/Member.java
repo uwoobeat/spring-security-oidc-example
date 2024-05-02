@@ -6,6 +6,7 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import java.time.LocalDateTime;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -29,8 +30,10 @@ public class Member {
 
   private String profileImageUrl;
 
+  private LocalDateTime createdAt;
+
   @Builder(access = AccessLevel.PRIVATE)
-  private Member(MemberRole role, String oauthId, String email, String profileImageUrl) {
+  private Member(MemberRole role, String oauthId, String email, String profileImageUrl, LocalDateTime createdAt) {
     this.role = role;
     this.oauthId = oauthId;
     this.email = email;
@@ -43,6 +46,12 @@ public class Member {
         .oauthId(oauthId)
         .email(email)
         .profileImageUrl(profileImageUrl)
+        .createdAt(LocalDateTime.now())
         .build();
+  }
+
+  public boolean isRecentlyJoined() {
+    // 가입일로부터 7일 이내이면 최근 가입한 회원으로 판단
+    return LocalDateTime.now().minusDays(7).isBefore(createdAt);
   }
 }
